@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<meta charset="utf-8">
+	<title>Quotes</title>
+</head>
+<body>
+	<a href="{% url 'quotes:logout' %}">Logout</a>
+	<h1>Welcome, {{ user.first_name }}!</h1>
+	{% if messages %}
+		{% for message in messages %}
+			<p>{{ message }}</p>
+		{% endfor %}
+	{% endif %}
+	<h2>Quotable Quotes</h2>
+	{% for quote in other_quotes %}
+		<p>{{ quote.content }}</p>
+		<p><i>Posted by <a href="{% url 'quotes:user' quote.creator.id %}">{{ quote.creator.first_name }}</a></i></p>
+		<a href="{% url 'quotes:favorite' quote.id %}">Add to My List</a>
+	{% endfor %}
+	<h3>Your Favorites</h3>
+	{% for quote in favorite_quotes %}
+		<p>{{ quote.content }}</p>
+		<p><i>Posted by <a href="{% url 'quotes:user' quote.creator.id %}">{{ quote.creator.first_name }}</a></i></p>
+		<a href="{% url 'quotes:unfavorite' quote.id %}">Remove from My List</a>
+	{% endfor %}
+	<h2>Contribute a Quote:</h2>
+	<form action='/add' method='post'>
+		{% csrf_token %}
+		<p><b>Quoted by: </b><input type='text' name='quoted_by'></p>
+		<p><b>Message: </b><textarea name="content" rows="8" cols="50"></textarea></p>
+		<p><input type='submit' value='Submit'></p>
+	</form>
+</body>
+</html>
