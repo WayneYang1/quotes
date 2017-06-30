@@ -77,7 +77,7 @@ def add(request):
 		return redirect(reverse('quotes:quotes'))
 	else:
 		user = User.objects.get(id=request.session['user'])
-		added_quote = Quote.objects.create(creator=user, quoted_by=request.POST['quoted_by'], content=request.POST['content'])
+		added_quote = Quote.objects.filter(creator=user, quoted_by=request.POST['quoted_by'], content=request.POST['content'])
 		return redirect(reverse('quotes:quotes'))
 
 def logout(request):
